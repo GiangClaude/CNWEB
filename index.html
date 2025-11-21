@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management CRUD</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .form-group { margin-bottom: 10px; }
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> </head>
+<body>
+
+    <h1>User Management</h1>
+
+    <div class="form-group">
+        <input type="text" id="searchBox" placeholder="Search by name...">
+        <button onclick="searchUser()">Search</button>
+    </div>
+
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+        <h3>Add New User</h3>
+        <input type="text" id="name" placeholder="Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="text" id="phone" placeholder="Phone">
+        <button onclick="createUser()">Add User</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Actions</th> </tr>
+        </thead>
+        <tbody id="userTableBody">
+            </tbody>
+    </table>
+
+    <script src="main.js"></script>
+</body>
+</html>

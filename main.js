@@ -35,37 +35,71 @@ function renderTable(users){
 }
 
 getUsers();
-async function createUser() { 
+async function handleForm() { 
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const phone = document.getElementById("phone").value;
 
     if (!name || !email){
         alert("Thiếu thông tin!");
-        retunr
+        return;
     }
 
     try {
-
-        if (!isFix) {
+        if (isFix == null) {
             const respone = await axios.post(API_URL, {
                 name: name,
                 email: email,
                 phone: phone
             });
 
+            console.log(respone.data);
+
+            const newUser = respone.data;
+            appendUser(newUser);
+
+            alert("Theem thanhf coong!");
+
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("phone").value = "";
+
+        } else {
+            const url = `${API_URL}/${isFix}`;
+            const response = await axios.put(url, {
+                name: name,
+                email: email, 
+                phone: phone
+            })
+            console.log(response.data);
+
+            const user = response.data;
+            alert("Sửa thanhf coong!");
+
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("phone").value = "";
+
+            const userRow = document.getElementById(`row-${isFix}`);
+            if (!userRow) {
+                alert("Không phát hiện id user! Hãy xem lại!");
+                return;
+            }
+            userRow.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.phone}</td>
+                <td>
+                    <button onclick="editUser(${user.id})">Edit</button>
+                    <button onclick="deleteUser(${user.id})">Delete</button> 
+                </td>
+            `
+
+            isFix = null;
         }
 
-        console.log(respone.data);
 
-        const newUser = respone.data;
-        appendUser(newUser);
-
-        alert("Theem thanhf coong!");
-
-        document.getElementById("name").value = "";
-        document.getElementById("email").value = "";
-        document.getElementById("phone").value = "";
     } catch (error) {
         // Slide 49: Xử lý lỗi (console.log hoặc alert)
         console.error("Lỗi khi thêm user:", error);
@@ -124,6 +158,12 @@ async function editUser(id) {
         document.getElementById("name").value = user.name;
         document.getElementById("email").value = user.email;
         document.getElementById("phone").value = user.phone;
+
+        isFix = id;
+
+        // handleForm();
+    } catch(err){
+        alert("Something error!");
     }
 }
 async function searchUser() { console.log("Đang tìm kiếm..."); }
